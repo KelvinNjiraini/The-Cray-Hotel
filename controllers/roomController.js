@@ -1,93 +1,60 @@
 const Room = require("../models/roomModel");
+const catchAsync = require('./../utils/catchAsync');
 
-exports.getAllRooms = async (req, res, next) => {
-  try {
-    const rooms = await Room.find();
+exports.getAllRooms = catchAsync(async (req, res, next) => {
+  const rooms = await Room.find();
 
-    res.status(200).json({
-      status: "success",
-      results: rooms.length,
-      data: {
-        rooms,
-      },
-    });
-  } catch (err) {
-    res.status(404).json({
-      status: "fail",
-      message: err,
-    });
-  }
-};
+  res.status(200).json({
+    status: "success",
+    results: rooms.length,
+    data: {
+      rooms,
+    },
+  });
 
-exports.getRoom = async (req, res, next) => {
-  try {
-    const room = await Room.findById(req.params.id);
+});
 
-    res.status(200).json({
-      status: "success",
-      data: {
-        room,
-      },
-    });
-  } catch (err) {
-    res.status(404).json({
-      status: "error",
-      message: err,
-    });
-  }
-};
+exports.getRoom = catchAsync(async (req, res, next) => {
+  const room = await Room.findById(req.params.id);
 
-exports.createRoom = async (req, res, next) => {
-  try {
-    const newRoom = await Room.create(req.body);
+  res.status(200).json({
+    status: "success",
+    data: {
+      room,
+    },
+  });
+});
 
-    res.status(201).json({
-      status: "success",
-      data: {
-        room: newRoom,
-      },
-    });
-  } catch (err) {
-    res.status(500).json({
-      status: "error",
-      message: err,
-    });
-  }
-};
+exports.createRoom = catchAsync(async (req, res, next) => {
+  const newRoom = await Room.create(req.body);
 
-exports.updateRoom = async (req, res, next) => {
-  try {
-    const newRoom = await Room.findByIdAndUpdate(req.params.id, req.body, {
-      new: true,
-      runValidators: true,
-    });
+  res.status(201).json({
+    status: "success",
+    data: {
+      room: newRoom,
+    },
+  });
+});
 
-    res.status(200).json({
-      status: 'success',
-      data: {
-        room: newRoom
-      }
-    })
-  } catch (err) {
-    res.status(400).json({
-      status: 'fail',
-      message: err
-    });
-  }
-};
+exports.updateRoom = catchAsync(async (req, res, next) => {
+  const newRoom = await Room.findByIdAndUpdate(req.params.id, req.body, {
+    new: true,
+    runValidators: true,
+  });
 
-exports.deleteRoom = async (req, res, next) => {
-  try {
-    const room = await Room.findByIdAndDelete(req.params.id);
+  res.status(200).json({
+    status: 'success',
+    data: {
+      room: newRoom
+    }
+  })
+});
 
-    res.status(200).json({
-      status: "success",
-      data: null,
-    });
-  } catch (err) {
-    res.status(404).json({
-      status: "fail",
-      message: err,
-    });
-  }
-};
+exports.deleteRoom = catchAsync(async (req, res, next) => {
+  const room = await Room.findByIdAndDelete(req.params.id);
+
+  res.status(200).json({
+    status: "success",
+    data: null,
+  });
+});
