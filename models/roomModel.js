@@ -8,7 +8,6 @@ const roomSchema = new mongoose.Schema({
     },
     roomCost: {
         type: Number,
-        enum: [8000, 15000, 22000],
         required: true
     },
     description: String,
