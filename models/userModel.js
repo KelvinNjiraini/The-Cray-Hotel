@@ -2,6 +2,7 @@ const crypto = require('crypto');
 const mongoose = require("mongoose");
 const bcrypt = require("bcryptjs");
 const validator = require('validator');
+const Room = require('./roomModel');
 
 const userSchema = new mongoose.Schema({
     name: {
@@ -65,6 +66,15 @@ userSchema.pre('save', function (next) {
 
     this.passwordChangedAt = Date.now() - 1000;
 
+    next();
+});
+
+userSchema.pre(/^find/, function (next) {
+    this.find({
+        active: {
+            $ne: false
+        }
+    });
     next();
 });
 
